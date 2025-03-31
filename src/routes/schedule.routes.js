@@ -3,5 +3,6 @@ const scheduleDocentController = require("../controllers/ScheduleDocentControlle
 const validateToken = require("../middlewares/token-validator");
 
 router.get("/all", validateToken, scheduleDocentController.all);
+router.post("/create", validateToken, scheduleDocentController.create);
 
 module.exports = router;

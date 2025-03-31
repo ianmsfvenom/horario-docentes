@@ -39,8 +39,18 @@ class LoginController {
             }
         })
 
-        if(existingDocent)
-            return next(new HttpError(400, "Docente já cadastrado"));
+        const existingCoordenator = await prisma.coordenadores.findFirst({
+            where: {
+                OR: [
+                    { email: email },
+                    { telefone: phone },
+                    { usuarios: { some: { usuario: user } } }
+                ]
+            }
+        })
+
+        if(existingDocent || existingCoordenator)
+            return next(new HttpError(400, "Nome de usuário ou e-mail ou telefone já cadastrado"));
 
         try {
             await prisma.docentes.create({
@@ -76,6 +86,30 @@ class LoginController {
 
         if(process.env.SECURITY_KEY !== securityKey)
             return next(new HttpError(401, "Chave de segurança inválida"));
+        
+        const existingDocent = await prisma.docentes.findFirst({
+            where: {
+                OR: [
+                    { email: email },
+                    { telefone: phone },
+                    { usuarios: { some: { usuario: user } } }
+                ]
+            }
+        })
+
+        const existingCoordenator = await prisma.coordenadores.findFirst({
+            where: {
+                OR: [
+                    { email: email },
+                    { telefone: phone },
+                    { usuarios: { some: { usuario: user } } }
+                ]
+            }
+        })
+
+        if(existingDocent || existingCoordenator)
+            return next(new HttpError(400, "Nome de usuário ou e-mail ou telefone já cadastrado"));
+
         
         try {
             await prisma.coordenadores.create({

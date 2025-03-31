@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model coordenadores {
+  id       Int        @id @default(autoincrement())
+  nome     String     @db.VarChar(100)
+  email    String?    @db.VarChar(100)
+  telefone String?    @db.VarChar(20)
+  usuarios usuarios[]
+}
+
+model docentes {
+  id                Int                 @id @default(autoincrement())
+  nome              String              @db.VarChar(100)
+  area              String?             @db.VarChar(50)
+  email             String?             @db.VarChar(100)
+  telefone          String?             @db.VarChar(20)
+  horarios_docentes horarios_docentes[]
+  usuarios          usuarios[]
+}
+
+model horarios_docentes {
+  id          Int                           @id @default(autoincrement())
+  docente_id  Int?
+  turma_id    Int?
+  dia_semana  horarios_docentes_dia_semana?
+  hora_inicio DateTime?                     @db.Time(0)
+  hora_fim    DateTime?                     @db.Time(0)
+  docentes    docentes?                     @relation(fields: [docente_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "horarios_docentes_ibfk_1")
+  turmas      turmas?                       @relation(fields: [turma_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "horarios_docentes_ibfk_2")
+
+  @@index([docente_id], map: "docente_id")
+  @@index([turma_id], map: "turma_id")
+}
+
+model turmas {
+  id                Int                 @id @default(autoincrement())
+  nome              String              @db.VarChar(50)
+  curso             String?             @db.VarChar(100)
+  periodo           String?             @db.VarChar(50)
+  horarios_docentes horarios_docentes[]
+}
+
+model usuarios {
+  id             Int                   @id @default(autoincrement())
+  usuario        String                @unique(map: "usuario") @db.VarChar(50)
+  senha          String                @db.VarChar(255)
+  nivel_acesso   usuarios_nivel_acesso
+  docente_id     Int?
+  coordenador_id Int?
+  docentes       docentes?             @relation(fields: [docente_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "usuarios_ibfk_1")
+  coordenadores  coordenadores?        @relation(fields: [coordenador_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "usuarios_ibfk_2")
+
+  @@index([coordenador_id], map: "coordenador_id")
+  @@index([docente_id], map: "docente_id")
+}
+
+enum horarios_docentes_dia_semana {
+  Segunda
+  Ter_a   @map("Terça")
+  Quarta
+  Quinta
+  Sexta
+  S_bado  @map("Sábado")
+  Domingo
+}
+
+enum usuarios_nivel_acesso {
+  coordenador
+  professor
+}

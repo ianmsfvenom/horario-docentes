@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../imgs/sentido-horario.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style-login.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Horário Docentes - Login</title>
+</head>
+
+<body>
+    <div class="containerLogin">
+        <img src="../imgs/sentido-horario.png" alt="Imagem de Relógio">
+        <h2>Horário Docentes - Login</h2>
+
+        <form class="login-form" id="login-form">
+            <div class="input-container">
+                <input type="text" name="userLogin" id="userLogin" placeholder="Usuário" required>
+            </div>
+
+            <div class="input-container">
+                <input type="password" name="senhaLogin" id="senhaLogin" placeholder="Senha" required>
+            </div>
+
+            <button type="submit" style="margin-bottom: 10px;">Logar</button>
+
+            <button type="button" style="margin-bottom: 10px;" onclick="redirectRegisterDocent()">Cadastrar docente</button>
+            <button type="button" onclick="redirectRegisterCoordenator()">Cadastrar coordenador</button>
+        </form>
+    </div>
+    <script src="/js/login.js"></script>
+</body>
+
+</html>

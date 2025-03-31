@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../imgs/sentido-horario.png" type="image/x-icon">
+    <link rel="stylesheet" href="../../css/style-login.css">
+    <title>Horário Docentes - Cadastre-se</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div class="containerLogin">
+        <img src="../../imgs/sentido-horario.png" alt="Imagem de Relógio">
+        <h2>Horário Docentes - Cadastre-se</h2>
+
+        <form class="login-form" id="register-form" >
+
+            <div class="input-container">
+                <input type="text" name="name" id="name" placeholder="Nome Completo" required>
+            </div>
+
+            <div class="input-container">
+                <input type="text" name="area" id="area" placeholder="Área" required>
+            </div>
+
+            <div class="input-container">
+                <input type="text" name="email" id="email" placeholder="E-mail" required>
+            </div>
+
+            <div class="input-container">
+                <input type="text" name="phone" id="phone" placeholder="Telefone" required>
+            </div>
+
+            <div class="input-container">
+                <input type="text" name="userLogin" id="userLogin" placeholder="Usuário" required>
+            </div>
+
+            <div class="input-container">
+                <input type="password" name="senhaLogin" id="senhaLogin" placeholder="Senha" required>
+            </div>
+
+            <div class="input-container">
+                <input type="password" name="confirmaSenha" id="confirmaSenha" placeholder="Confirmar a Senha" required>
+            </div>
+
+            <div class="input-container">
+                <input type="password" name="security-key" id="security-key" placeholder="Chave de Segurança" required>
+            </div>
+
+            <button type="submit">Cadastrar</button>
+            <a href="/login">Já tem uma conta?</a>
+        </form>
+    </div>
+
+    <script src="../../js/register-docent.js"></script>
+</body>
+
+</html>

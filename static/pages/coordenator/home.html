@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <title>Document</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bolder" href="#">
+        <img src="../../imgs/sentido-horario.png" width="30" height="30" class="d-inline-block align-text-top">
+        Horario Docentes
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/home/docents">Docentes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/home/coordenators">Coordenadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/home/classes">Turmas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/home">Horários docente</a>
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex">
+        <a class="btn btn-danger" role="button" href="/login/logout">Fazer logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container d-flex justify-content-center align-items-center p-3">
+    <div class="card w-100">
+      <div class="card-body">
+        <h2 class="card-title fw-bolder">Horários do docente</h2>
+        <div class="d-flex justify-content-start flex-row">
+          <div class="d-flex flex-column">
+            <label for="class-filter" class="form-label">Filtrar por turma:</label>
+            <select class="form-select" name="class-filter" id="class-filter">
+              <option value="all">Todos</option>
+            </select>
+          </div>
+
+          <div class="d-flex flex-column ms-3">
+            <label for="class-filter" class="form-label">Filtrar por dia da semana:</label>
+            <select class="form-select" name="day-of-week-filter" id="day-of-week-filter">
+              <option value="all">Todos</option>
+              <option value="Segunda">Segunda</option>
+              <option value="Terça">Terça</option>
+              <option value="Quarta">Quarta</option>
+              <option value="Quinta">Quinta</option>
+              <option value="Sexta">Sexta</option>
+              <option value="Sabado">Sabado</option>
+              <option value="Domingo">Domingo</option>
+            </select>
+          </div>
+
+          <div class="d-flex flex-column ms-3">
+            <label for="class-filter" class="form-label">Filtrar por professor:</label>
+            <select class="form-select" name="docent-filter" id="docent-filter">
+              <option value="all">Todos</option>
+            </select>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Docente</th>
+              <th>Turma</th>
+              <th>Dia da semana</th>
+              <th>Horário de inicio</th>
+              <th>Horário de saída</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+
+          </tbody>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/home-coordenator.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

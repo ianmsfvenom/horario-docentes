@@ -10,7 +10,14 @@ const dayOfWeekAddSelect = document.getElementById('day-of-week-select');
 const startTimeAddSelect = document.getElementById('start-time');
 const endTimeAddSelect = document.getElementById('end-time');
 
+const docentNameEditSelect = document.getElementById('edit-docent-select');
+const classEditSelect = document.getElementById('edit-class-select');
+const dayOfWeekEditSelect = document.getElementById('edit-day-of-week-select');
+const startTimeEditSelect = document.getElementById('edit-start-time');
+const endTimeEditSelect = document.getElementById('edit-end-time');
+
 var schedules;
+var editId;
 
 async function loadData() {
     const schedulesRequest = await fetch('/schedule/all')
@@ -20,7 +27,7 @@ async function loadData() {
     schedules = await schedulesRequest.json()
     var classes = await classesRequest.json()
     var docents = await docentsRequest.json()
-
+    
     schedules = schedules.map((schedule) => {
         if (schedule.dia_semana === "Ter_a") schedule.dia_semana = "Terça";
         return schedule;
@@ -36,7 +43,9 @@ async function loadData() {
                         <td>${schedule.turmas.nome}</td>
                         <td>${schedule.dia_semana}</td>
                         <td>${horaInicio}</td>
-                        <td>${horaFim}</td>`;
+                        <td>${horaFim}</td>
+                        <td><button id="edit-schedule-button-${schedule.id}" class="btn btn-primary" onclick="editSchedule(${schedule.id})">Editar</button>
+                        <button class="btn btn-danger" onclick="deleteSchedule(${schedule.id})">Excluir</button></td>`;
         table.appendChild(tr);
     });
 
@@ -50,6 +59,11 @@ async function loadData() {
         option2.value = turma.id;
         option2.textContent = turma.nome;
         classAddSelect.appendChild(option2);
+
+        const option3 = document.createElement("option");
+        option3.value = turma.id;
+        option3.textContent = turma.nome;
+        classEditSelect.appendChild(option3);
     })
 
     docents.forEach((docente) => {
@@ -61,10 +75,14 @@ async function loadData() {
         const option2 = document.createElement("option");
         option2.value = docente.id;
         option2.textContent = docente.nome;
-        docentNameAddSelect.appendChild(option);
+        docentNameAddSelect.appendChild(option2);
+
+        const option3 = document.createElement("option");
+        option3.value = docente.id;
+        option3.textContent = docente.nome;
+        docentNameEditSelect.appendChild(option3);
     })
 }
-
 loadData()
 
 function filterSchedules() {
@@ -89,17 +107,17 @@ function filterSchedules() {
                         <td>${horario.turmas.nome}</td>
                         <td>${horario.dia_semana}</td>
                         <td>${horaInicio}</td>
-                        <td>${horaFim}</td>`;
+                        <td>${horaFim}</td>
+                        <td><button id="edit-schedule-button-${horario.id}" class="btn btn-primary" onclick="editSchedule(${horario.id})">Editar</button>
+                        <button class="btn btn-danger" onclick="deleteSchedule(${horario.id})">Excluir</button></td>`;
         table.appendChild(tr);
     });
 }
-
 classFilter.addEventListener('change', filterSchedules);
 dayOfWeekFilter.addEventListener('change', filterSchedules);
 docentFilter.addEventListener('change', filterSchedules);
 
 const addScheduleBtn = document.getElementById('submit-schedule-button');
-
 addScheduleBtn.addEventListener('click', async () => {
     const docentId = docentNameAddSelect.value;
     const classId = classAddSelect.value;
@@ -137,3 +155,56 @@ addScheduleBtn.addEventListener('click', async () => {
         })
     }
 });
+
+async function deleteSchedule(id) {
+    const deleteScheduleRequest = await fetch(`/schedule/delete/${id}`, {
+        method: "POST"
+    });
+
+    if(!deleteScheduleRequest.ok) {
+        const error = await deleteScheduleRequest.json();
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.message,
+        })
+        return;
+    } else {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso',
+            text: 'Horário deletado com sucesso',
+        }).then(() => {
+            window.location.reload();
+        })
+    }
+}
+
+async function editSchedule(id) {
+    editId = id;
+
+    const scheduleRequest = await fetch(`/schedule/${id}`, {
+        method: "GET"
+    });
+
+    if(!scheduleRequest.ok) {
+        const error = await scheduleRequest.json();
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.message,
+        })
+        return;
+    }
+    
+    const schedule = await scheduleRequest.json();
+
+    docentNameEditSelect.value = schedule.docente_id;
+    classEditSelect.value = schedule.turma_id;
+    dayOfWeekEditSelect.value = schedule.dia_semana;
+    startTimeEditSelect.value = schedule.hora_inicio.split('T')[1].split(':')[0] + ":" + schedule.hora_inicio.split('T')[1].split(':')[1];
+    endTimeEditSelect.value = schedule.hora_fim.split('T')[1].split(':')[0] + ":" + schedule.hora_fim.split('T')[1].split(':')[1];
+
+    const bootstrapModal = new bootstrap.Modal(document.getElementById('editScheduleModal'));
+    bootstrapModal.show();
+}

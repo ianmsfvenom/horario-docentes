@@ -28,6 +28,13 @@ class ScheduleDocentController {
 
         res.json(newScheduleDocent);
     }
+
+    async search(req, res, next) {
+        const { id } = req.params;
+        const scheduleDocent = await prisma.horarios_docentes.findUnique({ where: { id: Number(id) }, include: { turmas: true, docentes: true } });
+        if(!scheduleDocent) return next(new HttpError(404, "Horário não encontrado"));
+        res.json(scheduleDocent);
+    }
 }
 
 module.exports = new ScheduleDocentController();

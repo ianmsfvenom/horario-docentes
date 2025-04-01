@@ -5,6 +5,9 @@ const periodField = document.getElementById("class-period");
 const table = document.getElementById("table-body");
 var editId = null;
 
+const editClassNameField = document.getElementById("edit-class-name");
+const editClassCourseField = document.getElementById("edit-class-course");
+const editClassPeriodField = document.getElementById("edit-class-period");
 
 addClassButton.addEventListener("click", async () => {
     if(!nameField.value || !courseField.value || !periodField.value) {
@@ -95,10 +98,6 @@ async function editClass(id) {
 
     const editClassButton = document.getElementById(`edit-class-button-${id}`);
 
-    const editClassNameField = document.getElementById("edit-class-name");
-    const editClassCourseField = document.getElementById("edit-class-course");
-    const editClassPeriodField = document.getElementById("edit-class-period");
-
     editClassNameField.value = editClassButton.parentElement.parentElement.children[0].textContent;
     editClassCourseField.value = editClassButton.parentElement.parentElement.children[1].textContent;
     editClassPeriodField.value = editClassButton.parentElement.parentElement.children[2].textContent;
@@ -109,10 +108,7 @@ async function editClass(id) {
 
 const editClassButton = document.getElementById("edit-class-button");
 editClassButton.addEventListener("click", async () => {
-    const editClassNameField = document.getElementById("edit-class-name");
-    const editClassCourseField = document.getElementById("edit-class-course");
-    const editClassPeriodField = document.getElementById("edit-class-period");
-
+    
     if(!editClassNameField.value || !editClassCourseField.value || !editClassPeriodField.value) {
         Swal.fire({
             icon: 'error',

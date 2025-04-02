@@ -124,6 +124,15 @@ addScheduleBtn.addEventListener('click', async () => {
     const dayOfWeek = dayOfWeekAddSelect.value;
     const startTime = startTimeAddSelect.value;
     const endTime = endTimeAddSelect.value;
+
+    if(!docentId || !classId || !dayOfWeek || !startTime || !endTime) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Preencha todos os campos',
+        })
+        return;
+    }
     
     const schedulesRequest = await fetch('/schedule/create', {
         method: 'POST',

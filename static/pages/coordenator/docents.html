@@ -35,7 +35,10 @@
         </ul>
       </div>
       <div class="d-flex">
-        <a class="btn btn-warning me-2" role="button" style="color: white;" href="/login/logout">
+        <a class="btn btn-dark me-2" role="button" onclick="changeTheme()" style="color: white;">
+          <i style="color: white;" class="fa-regular fa-moon me-2"></i>Modo escuro/claro
+        </a>
+        <a class="btn btn-warning me-2" role="button" onclick="editProfile()" style="color: white;">
           <i style="color: white;" class="fa-regular fa-user me-2"></i>Editar perfil
         </a>
         <a class="btn btn-danger" role="button" href="/login/logout">
@@ -57,6 +60,7 @@
                             <th>Área</th>
                             <th>E-mail</th>
                             <th>Telefone</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -65,7 +69,51 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar perfil</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="edit-name-profile" class="form-label">Nome completo:</label>
+              <input type="text" class="form-control" name="edit-name-profile" id="edit-name-profile">
+            </div>
+            <div class="mb-3">
+              <label for="edit-class-select" class="form-label">E-mail:</label>
+              <input class="form-control" type="email" name="edit-email-profile" id="edit-email-profile">
+            </div>
+            <div class="mb-3">
+              <label for="edit-tel-profile" class="form-label">Telefone:</label>
+              <input type="tel" class="form-control" name="edit-tel-profile" id="edit-tel-profile">
+            </div>
+            <div class="mb-3">
+              <label for="edit-username" class="form-label">Nome de usuário:</label>
+              <input type="text" class="form-control" name="edit-username" id="edit-username">
+            </div>
+            <div class="mb-3">
+              <label for="edit-password-profile" class="form-label">Senha:</label>
+              <input class="form-control" type="password" name="edit-password-profile" id="edit-password-profile">
+            </div>
+            <div class="mb-3">
+              <label for="edit-confirm-password-profile" class="form-label">Confirmar senha:</label>
+              <input  class="form-control" type="password" name="edit-confirm-password-profile" id="edit-confirm-password-profile">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary"  id="edit-profile-button">Salvar alterações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <script src="../../js/docents-coordenator.js"></script>
+    <script src="../../js/profile-coordenator.js"></script>
+    <script src="../../js/theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

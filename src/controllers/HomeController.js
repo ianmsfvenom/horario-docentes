@@ -12,6 +12,11 @@ class HomeController {
 
         const user = await prisma.usuarios.findUnique({ where: { id: userToken.id } });
 
+        if(!user) {
+            res.clearCookie("Authorization");
+            return res.redirect("/login");
+        }
+
         if(user.nivel_acesso === 'professor') res.sendFile(path.resolve(__dirname, "../../static/pages/docent/home.html"));
         else res.sendFile(path.resolve(__dirname, "../../static/pages/coordenator/home.html"));
     }
@@ -24,6 +29,11 @@ class HomeController {
         if(userToken.id == null) return res.redirect("/login");
 
         const user = await prisma.usuarios.findUnique({ where: { id: userToken.id } });
+
+        if(!user) {
+            res.clearCookie("Authorization");
+            return res.redirect("/login");
+        }
 
         if(user.nivel_acesso === 'professor') return res.sendFile(path.resolve(__dirname, "../../static/pages/docent/classes.html"));
         else return res.sendFile(path.resolve(__dirname, "../../static/pages/coordenator/classes.html"));
@@ -38,6 +48,11 @@ class HomeController {
 
         const user = await prisma.usuarios.findUnique({ where: { id: userToken.id } });
 
+        if(!user) {
+            res.clearCookie("Authorization");
+            return res.redirect("/login");
+        }
+
         if(user.nivel_acesso === 'professor') return res.sendFile(path.resolve(__dirname, "../../static/pages/docent/coordenators.html"));
         else return res.sendFile(path.resolve(__dirname, "../../static/pages/coordenator/coordenators.html"));
     }
@@ -50,6 +65,11 @@ class HomeController {
         if(userToken.id == null) return res.redirect("/login");
 
         const user = await prisma.usuarios.findUnique({ where: { id: userToken.id } });
+
+        if(!user) {
+            res.clearCookie("Authorization");
+            return res.redirect("/login");
+        }
 
         if(user.nivel_acesso === 'professor') return res.sendFile(path.resolve(__dirname, "../../static/pages/docent/docents.html"));
         else return res.sendFile(path.resolve(__dirname, "../../static/pages/coordenator/docents.html"));

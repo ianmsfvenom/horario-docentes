@@ -60,8 +60,8 @@ async function loadClasses() {
         const tr = document.createElement("tr");
         tr.innerHTML = `<td>${turma.nome}</td>
                         <td>${turma.curso}</td>
-                        <td >${turma.periodo}</td>
-                        <td class="d-flex"><button class="btn btn-danger" onclick="deleteClass(${turma.id})">Excluir</button>
+                        <td>${turma.periodo}</td>
+                        <td><button class="btn btn-danger" onclick="deleteClass(${turma.id})">Excluir</button>
                         <button id="edit-class-button-${turma.id}" class="btn btn-primary ms-2" onclick="editClass(${turma.id})">Editar</button></td>`;
         table.appendChild(tr);
     });

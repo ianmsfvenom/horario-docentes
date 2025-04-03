@@ -11,6 +11,8 @@ const scheduleRouter = require("./src/routes/schedule.routes");
 const coordenatorRouter = require("./src/routes/coordenator.routes");
 const HttpError = require("./src/errors/HttpError");
 const cookieParser = require("cookie-parser");
+const { jsPDF } = require('jspdf')
+const { autoTable } = require('jspdf-autotable');
 
 app.use(express.static('static'));
 app.use(express.json());
@@ -34,5 +36,19 @@ app.use((err, req, res, next) => {
 app.listen(3000, async () => {
     console.log("Server running on port http://localhost:3000");
 });
+
+const doc = new jsPDF();
+
+autoTable(doc, {
+    head: [['Name', 'Email', 'Country']],
+    body: [
+      ['David', 'david@example.com', 'Sweden'],
+      ['Castille', 'castille@example.com', 'Spain']
+    ],
+})
+
+const pdf = doc.output('arraybuffer')
+
+console.log(pdf)
 
 module.exports = { app };

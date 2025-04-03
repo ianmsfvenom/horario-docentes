@@ -16,8 +16,11 @@ const dayOfWeekEditSelect = document.getElementById('edit-day-of-week-select');
 const startTimeEditSelect = document.getElementById('edit-start-time');
 const endTimeEditSelect = document.getElementById('edit-end-time');
 
+const exportButton = document.getElementById('export-button');
+
 var schedules;
 var editId;
+var filteredSchedules = [];
 
 async function loadData() {
     const schedulesRequest = await fetch('/schedule/all')
@@ -25,6 +28,7 @@ async function loadData() {
     const docentsRequest = await fetch('/docent/all')
 
     schedules = await schedulesRequest.json()
+    filteredSchedules = schedules
     var classes = await classesRequest.json()
     var docents = await docentsRequest.json()
     
@@ -217,3 +221,93 @@ async function editSchedule(id) {
     const bootstrapModal = new bootstrap.Modal(document.getElementById('editScheduleModal'));
     bootstrapModal.show();
 }
+
+const editSubmitBtn = document.getElementById('submit-edit-schedule-button');
+editSubmitBtn.addEventListener('click', async () => {
+    const docentId = docentNameEditSelect.value;
+    const classId = classEditSelect.value;
+    const dayOfWeek = dayOfWeekEditSelect.value;
+    const startTime = startTimeEditSelect.value;
+    const endTime = endTimeEditSelect.value;
+
+    if(!docentId || !classId || !dayOfWeek || !startTime || !endTime) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Preencha todos os campos',
+        })
+        return;
+    }
+
+    const editScheduleRequest = await fetch(`/schedule/update/${editId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            docente_id: docentId,
+            turma_id: classId,
+            dia_semana: dayOfWeek,
+            hora_inicio: startTime,
+            hora_fim: endTime
+        })
+    });
+
+    if(editScheduleRequest.ok) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso',
+            text: 'Horário editado com sucesso',
+        }).then(() => {
+            window.location.reload();
+        })
+    } else {
+        const error = await editScheduleRequest.json();
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.message,
+        })
+    }
+});
+
+exportButton.addEventListener('click', async () => {
+
+    const schedulesArray = filteredSchedules.map(schedule => {
+        const horaInicio = schedule.hora_inicio.split('T')[1].split(':')[0] + ":" + schedule.hora_inicio.split('T')[1].split(':')[1];
+        const horaFim = schedule.hora_fim.split('T')[1].split(':')[0] + ":" + schedule.hora_fim.split('T')[1].split(':')[1];
+        return ({
+            docente: schedule.docentes.nome,
+            turma: schedule.turmas.nome,
+            dia_semana: schedule.dia_semana,
+            hora_inicio: horaInicio,
+            hora_fim: horaFim
+        })
+    });
+
+    const exportRequest = await fetch('/export/schedules', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(schedulesArray)
+    });
+
+    if(exportRequest.ok) {
+        const blob = await exportRequest.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'horarios.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } else {
+        const error = await exportRequest.json();
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.message,
+        })
+    }
+})

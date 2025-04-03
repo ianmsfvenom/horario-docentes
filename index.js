@@ -9,11 +9,9 @@ const docentRouter = require("./src/routes/docent.routes");
 const classRouter = require("./src/routes/class.routes");
 const scheduleRouter = require("./src/routes/schedule.routes");
 const coordenatorRouter = require("./src/routes/coordenator.routes");
+const exportRouter = require("./src/routes/export.route");
 const HttpError = require("./src/errors/HttpError");
 const cookieParser = require("cookie-parser");
-const { jsPDF } = require('jspdf')
-const { autoTable } = require('jspdf-autotable');
-
 app.use(express.static('static'));
 app.use(express.json());
 app.use(cookieParser());
@@ -26,6 +24,7 @@ app.use("/docent", docentRouter);
 app.use('/class', classRouter);
 app.use("/schedule", scheduleRouter);
 app.use("/coordenator", coordenatorRouter);
+app.use("/export", exportRouter);
 
 app.use((err, req, res, next) => {
     if(err instanceof HttpError) 
@@ -36,19 +35,5 @@ app.use((err, req, res, next) => {
 app.listen(3000, async () => {
     console.log("Server running on port http://localhost:3000");
 });
-
-const doc = new jsPDF();
-
-autoTable(doc, {
-    head: [['Name', 'Email', 'Country']],
-    body: [
-      ['David', 'david@example.com', 'Sweden'],
-      ['Castille', 'castille@example.com', 'Spain']
-    ],
-})
-
-const pdf = doc.output('arraybuffer')
-
-console.log(pdf)
 
 module.exports = { app };

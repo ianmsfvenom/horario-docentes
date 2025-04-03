@@ -37,17 +37,9 @@ addClassButton.addEventListener("click", async () => {
             icon: 'success',
             title: 'Sucesso',
             text: 'Turma criada com sucesso',
+        }).then(() => {
+            window.location.reload();
         })
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${nameField.value}</td>
-                        <td>${courseField.value}</td>
-                        <td>${periodField.value}</td>`;
-        table.appendChild(tr);
-
-        nameField.value = "";
-        courseField.value = "";
-        periodField.value = "";
     }
 })
 
@@ -141,3 +133,5 @@ editClassButton.addEventListener("click", async () => {
         })
     }
 })
+
+
